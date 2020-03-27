@@ -3,7 +3,9 @@ package simModel;
 class Output 
 {
 //	SMTravel model;
-//	
+
+//      ZIBO MENG	
+	
 //	protected Output(ModelName md) {model = md; }
     // Use OutputSequence class to define Trajectory and Sample Sequences
     // Trajectory Sequences
