@@ -1,7 +1,6 @@
 package smTravel;
 
 public class UDPs {
-	class UDPs {
 		ModelName model;  // for accessing the clock
 		
 		// Constructor
@@ -33,7 +32,7 @@ public class UDPs {
 				
 				
 				
-		}
+		
 
 
 }
