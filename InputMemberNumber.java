@@ -4,10 +4,11 @@ public class InputMemberNumber extends SequelActivity{
 //This activity represents the Call entity entering his member number.
 	
 	    SMTravel model;
-	    private Call call;
-	    EnterCardNumber(SMTravel model, Call call) {
+	    private Call icCall;
+	    
+	    InputMemberNumber(SMTravel model, Call icCall) {
 	        this.model = model;
-	        this.call = call;
+	        this.icCall = icCall;
 	    }
 
 	   
