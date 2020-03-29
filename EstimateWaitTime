@@ -1,87 +1,86 @@
 package SMTravelSimulation;
-
-import simulationModelling.ExtConditionalActivity;
-
-public abstract class EstimateWaitTime extends ExtConditionalActivity {
-	SMTravel model;
+import simulationModelling.ExtSequelActivity;
+import simulationModelling.SequelActivity;
+/*
+ * Extended Sequel Activity EstimateWaitTime
+ */
+public class EstimateWaitTime extends ExtSequelActivity{
 	
+	SMTravel model;
 	private Call icCall;
 
-//	private CallLine[] qCallLine;
 	
-	EstimateWaitTime(Call icCall){
+	 // Constructor
+	EstimateWaitTime(SMTravel model, Call icCall){
 		this.model = model;
-		this.icCall = icCall;
-		//this.qCallLine = CallLine[icCall.uCuType];   ?????
-		
+		this.icCall = icCall;	
 	}
-	protected static boolean precondition() {
-		
-	}
+	
 	public void startingEvent() {
-		icCall.startWaitTime = model.getClock(); 
-		
+		icCall.startWaitTime = model.getClock(); 	
 	}
+	
 	protected double duration() {
-		Constants.EWT_VOICE_DURATION;
-		
+		return Constants.EWTVOICEDURATION;
 	}
 	
 	public int interruptionPreCond(){
-		int returnValue = 0;
-		if((model.udp.CanServiceCall(icCall.uCuType) != null) && (model.udp.CheckEmptyQueue(icCall.uCuType) == true)) {returnValue = 1;}
+		int interruptID = 0;
+		if((model.udp.CanServiceCall(icCall.uCuType) != null) && (CheckEmptyQueue(icCall.uCuType) == true)) 
+			interruptID = 1;
 		
+		return interruptID;
 	}
 	public void interruptionSCS(int interruptID){
 		interruptID = interruptionPreCond();
-		if ( interruptID == 1) {
-			model.spInsertQue(CallLine.qCallLine[icCall.uCuType], icCall);
+		if (interruptID == 1) {
+			model.spInsertQue(model.qCallLine[icCall.uCuType], icCall);
 			model.spTerminate();
 		}
 	}
 	protected void terminatingEvent() {
-		if(model.udp.CheckRenegingCall(icCall.uCuType) == true) {
+		if(CheckRenegingCall(icCall.uCuType) == true) {
 			model.spLeave(icCall);
 		}
 		else {
-			model.spInsertQue(qCallLine[icCall.uCuType], icCall);
+			model.spInsertQue(model.qCallLine[icCall.uCuType], icCall);
 		}
 	}
-	
-/*------------------------------------   Embedded UDPs   ----------------------------------------------*/
-	
-	public boolean CheckRenegingCall(icCall.uCuType) {
+
+ /*------------------------------------   Embedded UDPs   ----------------------------------------------*/
+	/* Method: CheckRenegingCall
+	 * Description: Compare estimated wait-time and customers tolerance, to determine the reneging
+	 * Parameter: Customer Type
+	 * Return: true if the customer drops the call, false otherwise
+	 */
+	public boolean CheckRenegingCall(int uCuType) {
 		
-		double waitTime = 0; //// not sure about this, we don't have wait time anywhere
-		if(icCall.uCuType == Constants.REGULAR) {
-			waitTime = EWT_DURATION * qCallLine[GOLD].n + qCallLine[SILVER].n + qCallLine[REGULAR].n;
+		double waitTime = -1; //// not sure about this, we don't have wait time anywhere
+		if(uCuType == Constants.REGULAR) {
+			waitTime = Constants.EWTDURATION * model.qCallLine[Constants.GOLD].n + model.qCallLine[Constants.SILVER].n + model.qCallLine[Constants.REGULAR].n;
 		}
-		if(icCall.uCuType == Constants.SILVER) {
-			waitTime = EWT_DURATION * qCallLine[GOLD].n + qCallLine[SILVER].n;
+		if(uCuType == Constants.SILVER) {
+			waitTime = Constants.EWTDURATION * model.qCallLine[Constants.GOLD].n + model.qCallLine[Constants.SILVER].n;
 		}
-		if(icCall.uCuType == Constants.GOLD) {
-			waitTime = EWT_DURATION * qCallLine[GOLD].n;
+		if(uCuType == Constants.GOLD) {
+			waitTime = Constants.EWTDURATION * model.qCallLine[Constants.GOLD].n;
 		}
-		if(model.rvp.uWaitTMTolerance(icCalluCuType) >= waitTime) 
+		if(model.rvp.uWaitTMTolerance(uCuType) >= waitTime) 
 			return false;
 		else
 			return true;
-	}		
+	}	
 	
-	public boolean CheckEmptyQueue(icCall.uCuType){
-		if( qCallLine[icCall.uCuType] == null)
+	/* Method: CheckEmptyQueue
+	 * Description: checks the queue to find empty place
+	 * Parameter: Customer Type
+	 * Return: true if there is empty spot, false otherwise
+	 */
+	public boolean CheckEmptyQueue(int uCuType){
+		if(model.qCallLine[uCuType] == null)
 			return true;
 		else
 			return false;
 		
 	}
-	
-	
 }
-
-
-
-
-
-
-
