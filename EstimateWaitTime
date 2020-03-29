@@ -1,0 +1,87 @@
+package SMTravelSimulation;
+
+import simulationModelling.ExtConditionalActivity;
+
+public abstract class EstimateWaitTime extends ExtConditionalActivity {
+	SMTravel model;
+	
+	private Call icCall;
+
+//	private CallLine[] qCallLine;
+	
+	EstimateWaitTime(Call icCall){
+		this.model = model;
+		this.icCall = icCall;
+		//this.qCallLine = CallLine[icCall.uCuType];   ?????
+		
+	}
+	protected static boolean precondition() {
+		
+	}
+	public void startingEvent() {
+		icCall.startWaitTime = model.getClock(); 
+		
+	}
+	protected double duration() {
+		Constants.EWT_VOICE_DURATION;
+		
+	}
+	
+	public int interruptionPreCond(){
+		int returnValue = 0;
+		if((model.udp.CanServiceCall(icCall.uCuType) != null) && (model.udp.CheckEmptyQueue(icCall.uCuType) == true)) {returnValue = 1;}
+		
+	}
+	public void interruptionSCS(int interruptID){
+		interruptID = interruptionPreCond();
+		if ( interruptID == 1) {
+			model.spInsertQue(CallLine.qCallLine[icCall.uCuType], icCall);
+			model.spTerminate();
+		}
+	}
+	protected void terminatingEvent() {
+		if(model.udp.CheckRenegingCall(icCall.uCuType) == true) {
+			model.spLeave(icCall);
+		}
+		else {
+			model.spInsertQue(qCallLine[icCall.uCuType], icCall);
+		}
+	}
+	
+/*------------------------------------   Embedded UDPs   ----------------------------------------------*/
+	
+	public boolean CheckRenegingCall(icCall.uCuType) {
+		
+		double waitTime = 0; //// not sure about this, we don't have wait time anywhere
+		if(icCall.uCuType == Constants.REGULAR) {
+			waitTime = EWT_DURATION * qCallLine[GOLD].n + qCallLine[SILVER].n + qCallLine[REGULAR].n;
+		}
+		if(icCall.uCuType == Constants.SILVER) {
+			waitTime = EWT_DURATION * qCallLine[GOLD].n + qCallLine[SILVER].n;
+		}
+		if(icCall.uCuType == Constants.GOLD) {
+			waitTime = EWT_DURATION * qCallLine[GOLD].n;
+		}
+		if(model.rvp.uWaitTMTolerance(icCalluCuType) >= waitTime) 
+			return false;
+		else
+			return true;
+	}		
+	
+	public boolean CheckEmptyQueue(icCall.uCuType){
+		if( qCallLine[icCall.uCuType] == null)
+			return true;
+		else
+			return false;
+		
+	}
+	
+	
+}
+
+
+
+
+
+
+
