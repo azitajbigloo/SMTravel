@@ -1,16 +1,20 @@
-package smTravel;
-
+package SMTravelSimulation;
+//edited
 public class UDPs {
-		ModelName model;  // for accessing the clock
+
+	
+		SMTravel model;  // for accessing the clock
 		
 		// Constructor
-		protected UDPs(ModelName model) { this.model = model; }
+		protected UDPs(SMTravel model) { this.model = model; }
 		
-		protected Operator CanServiceCall(icCall.uCuType) {
-			if (icCall.uCuType == REGULAR && rgOperator[REGULAR].n < rgOperator[REGULAR].uNumOperators)
-				return operatorID = REGULAR;
-			else
-				return null;
+		protected int CanServiceCall(Call icCall) {
+			//icCall.uCuType = this.icCall.uCuType;
+			int operatorID = -1;
+			if ((icCall.uCuType == Constants.REGULAR) && (model.rgOperator[Constants.REGULAR].n < model.rgOperator[Constants.REGULAR].uNumOperator))
+				 operatorID = Constants.REGULAR;
+			
+			//// azita - edit
 			
 			if (icCall.uCuType == SILVER && rgOperator[SILVER].n < RG.Operator[SILVER].uNumOperators )
 				return operatorID = SILVER;
@@ -27,12 +31,7 @@ public class UDPs {
 				return operatorID = REGULAR;
 			else 
 				return null;
+		}
+
 			
-				
-				
-				
-				
-		
-
-
 }
