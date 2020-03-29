@@ -1,3 +1,4 @@
+package SMTravelSimulation;
 import simulationModelling.SequelActivity;
 public class InputMemberNumber extends SequelActivity{
 //This activity represents the Call entity entering his member number.
@@ -19,7 +20,7 @@ public class InputMemberNumber extends SequelActivity{
 	    }
 	   
 	    protected void terminatingEvent(){
-	        model.spStartSequel(EstimateWaitTime);
+	        model.spStartSequel(EstimateWaitTime(icCall));
 	    }
 	}
 
