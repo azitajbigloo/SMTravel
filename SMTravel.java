@@ -1,12 +1,10 @@
 package SMTravelSimulation;
-import java.util.LinkedList;
-import java.util.Queue;
-
 import simulationModelling.AOSimulationModel;
 import simulationModelling.Behaviour;
 import simulationModelling.SequelActivity;
 import java.util.*;
 
+import java.util.HashSet;
 
 
 // The Simulation Model Class
@@ -20,6 +18,7 @@ public class SMTravel extends AOSimulationModel{
 	//Trunkline rgTrunkLine = new TrunkLine;
 	Operator[] rgOperator = new Operator[3];
 	Queue[] qCallLine = new Queue[3];
+	TrunkLines rgTrunkLine;
 		// Define the reference variables to the various 
 		// entities with scope Set and Unary
 		// Objects can be created here or in the Initialise Action
@@ -130,7 +129,8 @@ public class SMTravel extends AOSimulationModel{
 			scheduleActivity(seqAct);
 		}	
 	protected double closingTime; // closing time of the call center
-	Operators rgOperators[] = new Operators[3];
+	
+	
 	
 	//Termination explicit
 	public boolean implicitStopCondition() {
@@ -151,19 +151,20 @@ public class SMTravel extends AOSimulationModel{
 	        }
 	    
 	//*** not sure about SPs ***********************************//
-	
+	// For implementing the group, use a HashSet object.
+		protected HashSet<TrunkLines> group = new HashSet<TrunkLines>();
 	public Call spDerive(Call icCall) {
 		 return (icCall = new Call());
 		
 	}
 	// Insert the call into the RG.TrunkLine
-	void spInsertGrp(TrunkLine rgTrunkLine, Call icCall) {
+	void spInsertGrp(TrunkLines rgTrunkLine, Call icCall) {
 		rgTrunkLine.add(icCall);
 		
 	}
 	
 	// remove 
-	void spRemoveGrp( TrunkLine rgTrunkLine, Call icCall) {
+	void spRemoveGrp(TrunkLines rgTrunkLine, Call icCall) {
 		rgTrunkLine.remove(icCall);
 		
 	}
@@ -178,6 +179,8 @@ public class SMTravel extends AOSimulationModel{
 	void spTerminate() {
 		// dont know
 	}
+
+	
 	
 	
 	
