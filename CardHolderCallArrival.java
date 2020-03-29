@@ -1,13 +1,14 @@
 package SMTravelSimulation;
 import simulationModelling.ScheduledAction;
+/*
+ * Scheduled Action CardHolderCallArrival 
+ */
 public class CardHolderCallArrival extends ScheduledAction {
 	
-	    SMTravel model; 
+	    SMTravel model; 	// Access to the SMTravel model
 	    
-	    // constructor 
-	    CardHolderCallArrival(SMTravel model) {
-	        this.model = model;
-	    }
+	    // Constructor 
+	    CardHolderCallArrival(SMTravel model) { this.model = model;}
 
 	    @Override
 	    public double timeSequence() {
@@ -16,21 +17,22 @@ public class CardHolderCallArrival extends ScheduledAction {
 
 	    @Override
 	    protected void actionEvent() {
-	    	 // Arrival Action Sequence SCS
+	    	// Arrival Action Sequence SCS
 	    	Call icCall = model.spDerive(icCall);
 	    	icCall.uCaType = model.rvp.uCaType();
 	    	model.udp.UpdateNumArrivalsOutput(icCall.uCuType);
-	    	if(TrunkLine.n < TrunkLine.numLines) {
-	    		model.spInsertGrp(rgTrunkLine, icCall);
+	    	//If there is an available trunkline add the Call
+	    	if(model.rgTrunkLine.n < model.rgTrunkLine.numLines) {
+	    		model.spInsertGrp(model.rgTrunkLine, icCall);
 	    		//model.rgTrunkLine.add(icCall);
-	    		model.spStartSequel(InputMemberNumber(icCall));// deleted icCall from the parameters, but it should be in the CM
-	    		
+	    		InputMemberNumber inputMNum = new InputMemberNumber(model, icCall);
+	    		model.spStartSequel(inputMNum);
 	    	}
 	    	else {
-	    		model.udp.UpdateNumBusySOutput(icCall.uCuType);
+	    		// Call receives busy signal and leaves.
+	    		model.udp.UpdateNumBusyOutput(icCall.uCuType);
 	    		model.spLeave(icCall);
-	    		
 	    	}
-	    }
-	}
+	    }	
+}
 
