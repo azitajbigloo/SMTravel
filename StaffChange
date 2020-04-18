@@ -1,0 +1,45 @@
+package SMTravelSimulation;
+import simulationModelling.ScheduledAction;
+/*
+ * Scheduled action: StaffCahnge
+ */
+public class StaffChange  extends ScheduledAction{
+	
+	    SMTravel model; // To access the complete model
+
+	    public StaffChange(SMTravel model) { this.model = model; }
+
+	    // Implementation of timeSequence
+	    private int sctIx = 0;
+
+	    public double timeSequence()
+	    {
+	        return model.rvp.Shifts[sctIx++];
+	        // < 0, 3600, 7200, 10800, 14400>
+	    }
+
+	    protected void actionEvent() {
+	        model.udp.processingStaffChange();
+	    }
+	    
+	    
+	    
+    void processingStaffChange() {
+        for (int i = 0; i < 9; i++){
+            if (model.getClock() == Constants.STAFF_CHANGE_TIME_SEQ[i]){
+                int shift = i % 5;
+                if (i < 5) { //Shift beginning
+                    for (int opType = 0; opType < 3; opType++){
+                        model.rgOperators[opType].numFreeOperators += model.rgOperators[opType].schedule[shift];
+                        tryMatchCallOperator();
+                    }
+                } else { //Shift ending
+                    for (int opType = 0; opType < 3; opType++){
+                        model.rgOperators[opType].numFreeOperators -= model.rgOperators[opType].schedule[shift];
+                    }
+                }
+            }
+        }
+    }
+}
+
