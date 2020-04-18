@@ -39,7 +39,8 @@ public class EstimateWaitTime extends ExtSequelActivity{
 		}
 	}
 	protected void terminatingEvent() {
-		if(CheckRenegingCall(icCall.uCuType) == true) {
+		int waitTime = CalculateWaitTime(icCall.uCuType);
+		if(model.rvp.uWaitTmTolerance(icCall.uCuType) < waitTime) {
 			model.spLeave(icCall);
 		}
 		else {
@@ -48,27 +49,25 @@ public class EstimateWaitTime extends ExtSequelActivity{
 	}
 
  /*------------------------------------   Embedded UDPs   ----------------------------------------------*/
-	/* Method: CheckRenegingCall
-	 * Description: Compare estimated wait-time and customers tolerance, to determine the reneging
+	/* Method: CalculateWaitTime
+	 * Description: Calculates the wait time of the customer call
 	 * Parameter: Customer Type
-	 * Return: true if the customer drops the call, false otherwise
+	 * Return: the wait time
 	 */
-	public boolean CheckRenegingCall(int uCuType) {
+	public double CalculateWaitTime(int uCuType) {
 		
-		double waitTime = -1; //// not sure about this, we don't have wait time anywhere
+		icCall.waitTime = -1; //// not sure about this, we don't have wait time anywhere
 		if(uCuType == Constants.REGULAR) {
-			waitTime = Constants.EWTDURATION * model.qCallLine[Constants.GOLD].n + model.qCallLine[Constants.SILVER].n + model.qCallLine[Constants.REGULAR].n;
+			icCall.waitTime = Constants.EWTDURATION * model.qCallLine[Constants.GOLD].n + model.qCallLine[Constants.SILVER].n + model.qCallLine[Constants.REGULAR].n;
 		}
 		if(uCuType == Constants.SILVER) {
-			waitTime = Constants.EWTDURATION * model.qCallLine[Constants.GOLD].n + model.qCallLine[Constants.SILVER].n;
+			icCall.waitTime = Constants.EWTDURATION * model.qCallLine[Constants.GOLD].n + model.qCallLine[Constants.SILVER].n;
 		}
 		if(uCuType == Constants.GOLD) {
-			waitTime = Constants.EWTDURATION * model.qCallLine[Constants.GOLD].n;
+			icCall.waitTime = Constants.EWTDURATION * model.qCallLine[Constants.GOLD].n;
 		}
-		if(model.rvp.uWaitTMTolerance(uCuType) >= waitTime) 
-			return false;
-		else
-			return true;
+		
+		return icCall.waitTime;
 	}	
 	
 	/* Method: CheckEmptyQueue
