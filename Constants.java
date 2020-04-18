@@ -15,6 +15,7 @@ public class Constants {
     final static int INFO = 0; 			// Identifier for Information call type
     final static int RSRVN = 1; 		// Identifier for Reservation call type
     final static int CHNG = 2;  		// Identifier for Change call type
-    final static String[] uCuType = {"REGULAR", "SILVER", "GOLD"}; 		// Customer Type (Regular, Silver or Gold)
-    final static String[] uCaType = {"INFO", "RSRVN" , "CHNG"};  		// Call Type (Information, Reserving or Changing)
+    final static String[] CUSTOMERTYPE = {"REGULAR", "SILVER", "GOLD"}; 		// Customer Type (Regular, Silver or Gold)
+    final static String[] CALLTYPE = {"INFO", "RSRVN" , "CHNG"};  		// Call Type (Information, Reserving or Changing)
+
 }
