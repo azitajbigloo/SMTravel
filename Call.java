@@ -3,9 +3,15 @@ package SMTravelSimulation;
  * Call Entities Class 
  */
 public class Call {
-    int uCuType;        // Type of Customer 
-    int uCaType;        // Type of Call
+	
+	//protected enum CustomerType {REGULAR, SILVER, GOLD};   //Type of customers
+	//protected CustomerType uCuType;
+	//protected enum CallType {RSRVN, INFO, CHNGN};   //Type of calls
+	//protected CallType uCaType;
     double startWaitTime;  // Time the Call arrives 
+    double waitTime; // Total wait Time of the Call
+	 int uCuType;        // Type of Customer 
+	 int uCaType;        // Type of Call
 	
     //Constructor     
     /***** I don't think this class needs a constructor??? ***/
