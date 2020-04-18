@@ -1,5 +1,6 @@
 
-package simModel;
+
+package SMTravelSimulation;
 import cern.jet.random.Exponential;
 import cern.jet.random.engine.MersenneTwister;
 import cern.jet.random.Uniform;
@@ -21,7 +22,7 @@ class RVPs
     private TriangularVariate[] dmSrvTm;
     private Uniform[] dmAftCallWrkTm;
     private Uniform[] dmWaitTmTolerated;
-    private Uniform[] dmIMNDuration;
+    private Uniform dmIMNDuration;
     
     // Constructor
     RVPs(SMTravel model, Seeds sd)
@@ -36,9 +37,9 @@ class RVPs
                     new MersenneTwister(sd.arrCardholder[i]));
         }
        
-        dmCaType = new MersenneTwister(sd.cardholderType)
-        dmCuType = new MersenneTwister(sd.customerType)
-        dmSrvTm = new TraingularVariate[3];
+        dmCaType = new MersenneTwister(sd.cardholderType);
+        dmCuType = new MersenneTwister(sd.customerType);
+        dmSrvTm = new TriangularVariate[3];
         dmAftCallWrkTm = new Uniform[3];
         for (int i = 0; i < 3; i++){
             dmSrvTm[i] = new TriangularVariate(
@@ -47,18 +48,17 @@ class RVPs
                     SERVICE_TIME[i][MAX],
                     new MersenneTwister(sd.serviceTime[i])
             );
-           }
             dmAftCallWrkTm[i] = new Uniform(
                     AFTER_CALL_TIME[i][MIN],
                     AFTER_CALL_TIME[i][MAX],
                     new MersenneTwister(sd.afterCallTime[i])
             );
-          }
+        }
         dmWaitTmTolerated = new Uniform[2];
-        for (int i = 0; i < 2; i++) {
-            dmToleratedWaitTime[i] = new Uniform(
-                    TOLERATED_WAIT_TIME[i][MIN],
-                    TOLERATED_WAIT_TIME[i][MAX],
+        for (int i = 0; i < 3; i++) {
+        	dmWaitTmTolerated[i] = new Uniform(
+                    TOLERATED_WAITTIME[i][MIN],
+                    TOLERATED_WAITTIME[i][MAX],
                     new MersenneTwister(sd.toleratedWaitTime[i])
             );
         }
@@ -83,7 +83,7 @@ class RVPs
             115.0 / 60.0, // 5 PM -  6 PM
             56.0  / 60.0, // 6 PM -  7 PM
     };
-       protected final static double[] CARDHOLDER_ARRIVAL_RATE = {
+    protected final static double[] CARDHOLDER_ARRIVAL_RATE = {
             89.0  / 60.0, // 7 AM -  8 AM
             243.0 / 60.0, // 8 AM -  9 AM
             221.0 / 60.0, // 9 AM - 10 AM
@@ -97,30 +97,40 @@ class RVPs
             145.0 / 60.0, // 5 PM -  6 PM
             69.0  / 60.0, // 6 PM -  7 PM
     };
-        protected final static double[][] SERVICE_TIME = {
+    protected final static double[][] SERVICE_TIME = {
             {1.2,  3.75, 2.05}, //INFORMATION
             {2.25, 8.6,  2.95}, //RESERVATION
             {1.2,  5.8,  1.9 }  //CHANGE
     };
-        protected final static int MIN = 0;
-        protected final static int MAX = 1;
-        protected final static int MEAN = 2;
-        protected final static double SILVER_OPERATOR_REDUCTION = 0.95; //95% of the time needed by a REGULAR operator
-        protected final static double GOLD_OPERATOR_REDUCTION = 0.88;   //88% of the time needed by a REGULAR operator
-        protected final static double[][] AFTER_CALL_TIME = {
+    protected final static int MIN = 0;
+    protected final static int MAX = 1;
+    protected final static int MEAN = 2;
+    protected final static double SILVER_OPERATOR_REDUCTION = 0.95; //95% of the time needed by a REGULAR operator
+    protected final static double GOLD_OPERATOR_REDUCTION = 0.88;   //88% of the time needed by a REGULAR operator
+    protected final static double[][] AFTER_CALL_TIME = {
             {0.05, 0.10}, //INFORMATION
             {0.5,  0.8 }, //RESERVATION
             {0.4,  0.6 }  //CHANGE
     };
-        protected final static double[][] TOLERATED_WAIT_TIME = {
+    protected final static double[][] TOLERATED_WAIT_TIME = {
             {12.0, 30.0}, //REGULAR
             {8.0,  17.0}  //CARDHOLDER
     };
-        protected final static double PROPORTION_SILVER_CARDHOLDER = 0.68;
-                      //PROPORTION_GOLD_CARDHOLDER = 0.32
-        protected final static double[] TYPING_TIME = {7.0 / 60.0, 16.0 / 60.0};
-        
-        //Random Variate Procedures//
+    protected final static double PROPORTION_SILVER_CARDHOLDER = 0.68;
+    protected final static double PROPORTION_SILVERCARDHOLDER = 0.68;
+                     //PROPORTION_GOLD_CARDHOLDER = 0.32
+    protected final static double[] TYPING_TIME = {7.0 / 60.0, 16.0 / 60.0};
+    protected final static double[][] TOLERATED_WAITTIME = {
+        {12.0, 30.0}, //REGULAR
+        {8.0,  17.0},  //GOLD
+        {8.0, 17.0} // SLIVER
+};   
+    protected final static double[] PROPORTION_SUBJECT = {
+        0.16, //INFORMATION
+        0.76, //RESERVATION
+        0.08  //CHANGE
+};  
+    //Random Variate Procedures//
         
         double DuCallCrd()
     {
@@ -138,7 +148,7 @@ class RVPs
     int uCuType() {
         double randNum = dmCuType.nextDouble();
         int type;
-        if(randNum < PROPORTION_SILVER_CARDHOLDER){
+        if(randNum < PROPORTION_SILVERCARDHOLDER){
             type = Constants.SILVER;
         } else {
             type = Constants.GOLD;
@@ -149,17 +159,17 @@ class RVPs
     {
         double randNum = dmCaType.nextDouble();
         int callType;
-        if(randNum < Constants.PROPORTION_SUBJECT[Constants.INFORMATION]){
-            callSubType = Constants.INFORMATION;
-        } else if (randNum < Constants.PROPORTION_SUBJECT[Constants.INFORMATION] +
-                Constants.PROPORTION_SUBJECT[Constants.RESERVATION]) {
-            callType = Constants.RESERVATION;
+        if(randNum < PROPORTION_SUBJECT[Constants.INFO]){
+            callType = Constants.INFO;
+        } else if (randNum < PROPORTION_SUBJECT[Constants.INFO] +
+                PROPORTION_SUBJECT[Constants.RSRVN]) {
+            callType = Constants.RSRVN;
         } else {
-            callType = Constants.CHANGE;
+            callType = Constants.CHNG;
         }
         return callType;
     }
-}
+
 
     double uSrvTm(int callTypeService, int operatorType){
         double serviceTime = dmSrvTm[callTypeService].next();
@@ -174,18 +184,20 @@ class RVPs
     double uAftCallWrkTm(int callSubject, int operatorType) {
         double afterCallTime = dmAftCallWrkTm[callSubject].nextDouble();
         if (operatorType == Constants.SILVER){
-            afterCallTime *= Constants.SILVER_OPERATOR_REDUCTION;
+            afterCallTime *= SILVER_OPERATOR_REDUCTION;
         } else if (operatorType == Constants.GOLD) {
-            afterCallTime *= Constants.GOLD_OPERATOR_REDUCTION;
+            afterCallTime *= GOLD_OPERATOR_REDUCTION;
         }
         return afterCallTime;
     }
 
-    double uWaitTmTolerance(int callType) {
-        if(callType == Constants.REGULAR) {
-            return dmToleratedWaitTime[Constants.REGULAR].nextDouble();
-        } else { //CARDHOLDER
-            return dmToleratedWaitTime[Constants.CARDHOLDER].nextDouble();
+    double uWaitTmTolerance(int cuType) {
+        if(cuType == Constants.REGULAR) {
+            return dmWaitTmTolerated[Constants.REGULAR].nextDouble();
+        } else if(cuType == Constants.GOLD){ //GOLD
+            return dmWaitTmTolerated[Constants.GOLD].nextDouble();
+        } else { //SLIVER
+        	return dmWaitTmTolerated[Constants.SILVER].nextDouble();
         }
     }
 
