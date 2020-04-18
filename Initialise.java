@@ -1,46 +1,48 @@
-package smTravel;
+package SMTravelSimulation;
 
-import smTravel.Operator.*;
+import simulationModelling.ScheduledAction;
+import SMTravelSimulation.Operator.*;
 import simulationModelling.ScheduledAction;
 
-public class Initialise {
-	smTeravel model;
-	
-	// Constructor
-	protected Initialise(smTeravel model) { this.model = model; }
-	
-	double [] ts = { 0.0, -1.0 }; // -1.0 ends scheduling
-	int tsix = 0;  // set index to first entry.
-	protected double timeSequence() {
-		return ts[tsix++];  // only invoked at t=0
-	}
-	
-	public void actionEvent() {
-		// System Initialisation
-		int qCallLine[GOLD] = 0;
-		int qCallLine[SILVER] = 0;
-		int qCallLine[REGULAR] = 0;
+public class Initialise extends ScheduledAction{
 	
 	
-		int rgOperator[GOLD] = 0;
-		int rgOperator[SILVER] = 0;
-		int rgOperator[REGULAR] = 0;
-	
-		int rgTrunkLine.n = 0;
+
+
+		SMTravel model;
 		
-		// Initialise the output variables
-		int numGoldCalls = 0;
-		int numSilverCalls = 0;
-		int numRegularCalls  = 0;
-		int num90SecGoldCalls = 0;
-		int num180SecSilverCalls = 0;
-		int num900SecRegularCalls = 0;
-		int numBusyCrdHCalls = 0;
-		int numBusyRegualarCalls = 0;
+		// Constructor
+		protected Initialise(SMTravel model) { this.model = model; }
 		
+		double [] ts = { 0.0, -1.0 }; // -1.0 ends scheduling
+		int tsix = 0;  // set index to first entry.
+		protected double timeSequence() {
+			return ts[tsix++];  // only invoked at t=0
+		}
 		
-	}
-	
-	
-	
+		public void actionEvent() {
+			// System Initialization
+			model.qCallLine[Constants.GOLD].clear();
+	        model.qCallLine[Constants.SILVER].clear();
+	        model.qCallLine[Constants.REGULAR].clear();
+
+			model.rgOperator[Constants.GOLD].group.clear();
+			model.rgOperator[Constants.SILVER].group.clear();
+			model.rgOperator[Constants.REGULAR].group.clear();
+		
+			model.rgTrunkLine.group.clear();
+			
+			// Initialize the output variables
+			model.output.numGoldCalls = 0;
+			model.output.numSilverCalls = 0;
+			model.output.numRegularCalls  = 0;
+			model.output.num90SecGoldCalls = 0;
+			model.output.num180SecSilverCalls = 0;
+			model.output.num900SecRegularCalls = 0;
+			model.output.numBusyCrdHCalls = 0;
+			model.output.numBusyRegularCalls = 0;
+			
+			
+		}
+
 }
