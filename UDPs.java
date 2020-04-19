@@ -32,7 +32,29 @@ public class UDPs {
 			else 
 				return null;
 		}
-
+                //Hang Gong edited for UPdateWaitCallsOutput Call for service//
+		protected void UpdateWaitCallsOutput(Call icCall){
+			 icCall.waitTime = model.getClock() - icCall.startWaitTime;
+			 if(icCall.uType == Constants.REGULAR){
+				 model.output.numRegularCalls ++;
+				 if(icCall.waitTime > 900 )
+					 model.output.num900SecRegularCalls ++;
+				 model.output.perc900SecRegularCalls = model.output.num900SecRegularCalls/model.output.numRegularCalls;
+			 }
+			 else if(icCall.uType==Constants.SILVER){
+				 model.output.numSilverCalls ++;
+				 if(icCall.waitTime > 180)
+					 model.output.num180SecSilverCalls ++;
+				 model.output.perc180SecSilverCalls = model.output.num180SecSilverCalls/model.output.numSilverCalls;
+			 }
+			 else if(icCall.uType == Constants.GOLD){
+				 model.output.numGoldCalls ++;
+				 if(icCall.waitTime > 90)
+					 model.output.num90SecGoldCalls ++;
+				 model.output.perc90SecGoldCalls = model.output.num90SecGoldCalls/model.output.numGoldCalls;
+			 }
+		}
+	
 		protected void UpdateNumArrivalsOutput(Call icCall) {
 			
 			if(icCall.uCuType ==  Constants.REGULAR) { 
