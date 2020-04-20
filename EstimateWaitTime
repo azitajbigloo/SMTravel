@@ -15,6 +15,7 @@ public class EstimateWaitTime extends ExtSequelActivity{
 		this.model = model;
 		this.icCall = icCall;	
 	}
+	EstimateWaitTime(SMTravel model){} //created this for interruption preconditon in smtravel class
 	
 	public void startingEvent() {
 		icCall.startWaitTime = model.getClock(); 	
@@ -24,7 +25,7 @@ public class EstimateWaitTime extends ExtSequelActivity{
 		return Constants.EWTVOICEDURATION;
 	}
 	
-	public int interruptionPreCond(){
+	public static int interruptionPreCond(SMTravel model){  // added the smtravel model for interruption preconditon in smtravel class
 		int interruptID = 0;
 		if((model.udp.CanServiceCall(icCall.uCuType) != null) && (CheckEmptyQueue(icCall.uCuType) == true)) 
 			interruptID = 1;
@@ -39,7 +40,7 @@ public class EstimateWaitTime extends ExtSequelActivity{
 		}
 	}
 	protected void terminatingEvent() {
-		int waitTime = CalculateWaitTime(icCall.uCuType);
+	double waitTime = CalculateWaitTime(icCall.uCuType);
 		if(model.rvp.uWaitTmTolerance(icCall.uCuType) < waitTime) {
 			model.spLeave(icCall);
 		}
@@ -83,3 +84,4 @@ public class EstimateWaitTime extends ExtSequelActivity{
 		
 	}
 }
+
