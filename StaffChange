@@ -1,45 +1,84 @@
+
+
 package SMTravelSimulation;
 import simulationModelling.ScheduledAction;
+
 /*
  * Scheduled action: StaffCahnge
  */
-public class StaffChange  extends ScheduledAction{
+
+class StaffChange extends ScheduledAction {
 	
-	    SMTravel model; // To access the complete model
+	SMTravel model;  // reference to model object
 
-	    public StaffChange(SMTravel model) { this.model = model; }
+	private double[] staffChangeTimeSeq = {0,3600,7200,10800,14400,28800,32400,36000,39600,43200,-1};
+	private int sctIx = 0;
+	public double timeSequence() { 
+		double nxtTime = staffChangeTimeSeq[sctIx];
+		sctIx++;
+		return(nxtTime); 
+	}
 
-	    // Implementation of timeSequence
-	    private int sctIx = 0;
+	protected void actionEvent()
+	{
+	    int x = 1;
 
-	    public double timeSequence()
-	    {
-	        return model.rvp.Shifts[sctIx++];
-	        // < 0, 3600, 7200, 10800, 14400>
+// ON work
+	    if(model.getClock() == staffChangeTimeSeq[0]) {
+			model.rgOperator[REGULAR].uNumOperators = model.rgOperator[REGULAR].uShift[0];
+			model.rgOperator[SILVER].uNumOperators = model.rgOperator[SILVER].uShift[0];
+			model.rgOperator[GOLD].uNumOperators = model.rgOperator[GOLD].uShift[0];
+		}
+	    else if(model.getClock() == staffChangeTimeSeq[1]) {
+	    	model.rgOperator[REGULAR].uNumOperators += model.rgOperator[REGULAR].uShift[1];
+			model.rgOperator[SILVER].uNumOperators += model.rgOperator[SILVER].uShift[1];
+			model.rgOperator[GOLD].uNumOperators += model.rgOperator[GOLD].uShift[1];
 	    }
-
-	    protected void actionEvent() {
-	        model.udp.processingStaffChange();
+	    else if(model.getClock() == staffChangeTimeSeq[2]) {
+	    	model.rgOperator[REGULAR].uNumOperators += model.rgOperator[REGULAR].uShift[2];
+			model.rgOperator[SILVER].uNumOperators += model.rgOperator[SILVER].uShift[2];
+			model.rgOperator[GOLD].uNumOperators += model.rgOperator[GOLD].uShift[2];
+	    }
+	    else if(model.getClock() == staffChangeTimeSeq[3]) {
+	    	model.rgOperator[REGULAR].uNumOperators += model.rgOperator[REGULAR].uShift[3];
+			model.rgOperator[SILVER].uNumOperators += model.rgOperator[SILVER].uShift[3];
+			model.rgOperator[GOLD].uNumOperators += model.rgOperator[GOLD].uShift[3];
+	    }
+	    else if(model.getClock() == staffChangeTimeSeq[4]) {
+	    	model.rgOperator[REGULAR].uNumOperators += model.rgOperator[REGULAR].uShift[4];
+			model.rgOperator[SILVER].uNumOperators += model.rgOperator[SILVER].uShift[4];
+			model.rgOperator[GOLD].uNumOperators += model.rgOperator[GOLD].uShift[4];
 	    }
 	    
+// OFF work
 	    
-	    
-    void processingStaffChange() {
-        for (int i = 0; i < 9; i++){
-            if (model.getClock() == Constants.STAFF_CHANGE_TIME_SEQ[i]){
-                int shift = i % 5;
-                if (i < 5) { //Shift beginning
-                    for (int opType = 0; opType < 3; opType++){
-                        model.rgOperators[opType].numFreeOperators += model.rgOperators[opType].schedule[shift];
-                        tryMatchCallOperator();
-                    }
-                } else { //Shift ending
-                    for (int opType = 0; opType < 3; opType++){
-                        model.rgOperators[opType].numFreeOperators -= model.rgOperators[opType].schedule[shift];
-                    }
-                }
-            }
-        }
-    }
+	    else if(model.getClock() == staffChangeTimeSeq[5]) {
+	    	model.rgOperator[REGULAR].uNumOperators -= model.rgOperator[REGULAR].uShift[0];
+			model.rgOperator[SILVER].uNumOperators -= model.rgOperator[SILVER].uShift[0];
+			model.rgOperator[GOLD].uNumOperators -= model.rgOperator[GOLD].uShift[0];
+	    }
+	    else if(model.getClock() == staffChangeTimeSeq[6]) {
+	    	model.rgOperator[REGULAR].uNumOperators -= model.rgOperator[REGULAR].uShift[1];
+			model.rgOperator[SILVER].uNumOperators -= model.rgOperator[SILVER].uShift[1];
+			model.rgOperator[GOLD].uNumOperators -= model.rgOperator[GOLD].uShift[1];
+	    }
+	    else if(model.getClock() == staffChangeTimeSeq[7]) {
+	    	model.rgOperator[REGULAR].uNumOperators -= model.rgOperator[REGULAR].uShift[2];
+			model.rgOperator[SILVER].uNumOperators -= model.rgOperator[SILVER].uShift[2];
+			model.rgOperator[GOLD].uNumOperators -= model.rgOperator[GOLD].uShift[2];
+	    }
+	    else if(model.getClock() == staffChangeTimeSeq[8]) {
+	    	model.rgOperator[REGULAR].uNumOperators -= model.rgOperator[REGULAR].uShift[3];
+			model.rgOperator[SILVER].uNumOperators -= model.rgOperator[SILVER].uShift[3];
+			model.rgOperator[GOLD].uNumOperators -= model.rgOperator[GOLD].uShift[3];
+	    }
+	    else if(model.getClock() == staffChangeTimeSeq[9]) {
+	    	model.rgOperator[REGULAR].uNumOperators -= model.rgOperator[REGULAR].uShift[4];
+			model.rgOperator[SILVER].uNumOperators -= model.rgOperator[SILVER].uShift[4];
+			model.rgOperator[GOLD].uNumOperators -= model.rgOperator[GOLD].uShift[4];
+	    }
+		
+	    else System.out.println("Invalid time to schedule employees:"+model.getClock());
+	}
+
 }
-
