@@ -61,15 +61,15 @@ public class UDPs {
 			 for (int caType = 2; caType >= 0; caType--) { //Prioritize GOLD operators
 		            if(model.rgOperator[caType].n < model.rgOperator[caType].uNumOperators) {
 		                if (!model.qCallLine.get(Constants.GOLD).isEmpty()){
-		                    CallId = caType;
+		                    CallId = CONSTANTS.GOLD;
 		                    break;
 		                } else if ((caType == Constants.REGULAR || caType == Constants.SILVER)
 		                        && !model.qCallLine.get(Constants.SILVER).isEmpty()) {
-		                    CallId = caType;
+		                    CallId = CONSTANTS.SILVER;
 		                    break;
 		                } else if (caType == Constants.REGULAR
 		                        && !model.qCallLine.get(Constants.REGULAR).isEmpty()) {
-		                    CallId = caType;
+		                    CallId = CONSTANTS.REGULAR;
 		                    break;
 		                }
 		            }
