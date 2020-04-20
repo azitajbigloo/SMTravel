@@ -25,7 +25,10 @@ public class Initialise extends ScheduledAction{
 			model.qCallLine[Constants.GOLD].clear();
 	        model.qCallLine[Constants.SILVER].clear();
 	        model.qCallLine[Constants.REGULAR].clear();
-
+			//Hang Gong comments: if we use arraylist it should initialze like that:
+                        //model.qCallLine.get(Constants.GOLD).clear();
+	                //model.qCallLine.get(Constants.SILVER).clear();
+	                //model.qCallLine.get(Constants.REGULAR).clear();
 			model.rgOperator[Constants.GOLD].group.clear();
 			model.rgOperator[Constants.SILVER].group.clear();
 			model.rgOperator[Constants.REGULAR].group.clear();
