@@ -51,6 +51,9 @@ public class SMTravel extends AOSimulationModel{
 			qCallLine[1] = new LinkedList<Call>();
 			qCallLine[2] = new LinkedList<Call>();
                         // HANG GONG COMMENTS: ArrayList<ArrayList<Call>> qCallLine = new ArrayList<ArrayList<Call>>(3);
+			//qCallLine.add(Constants.GOLD, new ArrayList<Call>());
+		        //qCallLine.add(Constants.SILVER, new ArrayList<Call>());
+		        //qCallLine.add(Constants.REGULAR, new ArrayList<Call>());
 			rgTrunkLine = new TrunkLines(numTrunkLine, numReservedLine);
        
 			rgOperator[Constants.REGULAR] = new Operator(schedule[Constants.REGULAR]);
