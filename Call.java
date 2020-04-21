@@ -10,6 +10,7 @@ public class Call {
 	//protected CallType uCaType;
     double startWaitTime;  // Time the Call arrives 
     double waitTime; // Total wait Time of the Call
+    double uToleratedWaitTime;	//each call have a wait time tolerance, will be determined by an RVP - Hossein
 	 int uCuType;        // Type of Customer 
 	 int uCaType;        // Type of Call
 	
