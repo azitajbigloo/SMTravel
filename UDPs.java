@@ -3,36 +3,39 @@ package SMTravelSimulation;
 public class UDPs {
 
 	
-		SMTravel model;  // for accessing the clock
+	SMTravel model;  // for accessing the clock
+	//private Call icCall;
 		
-		// Constructor
-		protected UDPs(SMTravel model) { this.model = model; }
+	// Constructor
+	protected UDPs(SMTravel model) { this.model = model; }
 		
-		protected int CanServiceCall(int uCuType) {
-			//icCall.uCuType = this.icCall.uCuType;
-			int operatorID = -1;
-			if ((uCuType.uCuType == Constants.REGULAR) && (model.rgOperator[Constants.REGULAR].n < model.rgOperator[Constants.REGULAR].uNumOperator))
-				 operatorID = Constants.REGULAR;
+	protected int CanServiceCall(Call icCall) {
+		//icCall = this.icCall;
+		int operatorID = -1;
+		if ((icCall.uCuType == Constants.REGULAR) && (model.rgOperator[Constants.REGULAR].n < model.rgOperator[Constants.REGULAR].uNumOperators))
+			 operatorID = Constants.REGULAR;
 			
-			//// azita - edit
+		if (icCall.uCuType == Constants.SILVER) {
+			if (model.rgOperator[Constants.SILVER].n < model.rgOperator[Constants.SILVER].uNumOperators)
+				operatorID = Constants.SILVER;
+			else if (model.rgOperator[Constants.REGULAR].n < model.rgOperator[Constants.REGULAR].uNumOperators)
+				operatorID = Constants.REGULAR;
 			
-			if (uCuType.uCuType == SILVER && rgOperator[SILVER].n < RG.Operator[SILVER].uNumOperators )
-				return operatorID = SILVER;
-			else if (uCuType.uCuType == SILVER && rgOperator[REGULAR].n < rgOperator[REGULAR].uNumOperators)
-				return operatorID == REGULAR;
-			else
-				return null;
-			
-			if (uCuType.uCuType == GOLD && rgOperator[GOLD].n < rgOperator[GOLD].uNumOperators)
-				return operatorID = GOLD;	
-			else if (uCuType.uCuType = GOLD && rgOperator[SILVER].n < RG.Operator[SILVER].uNumOperators)
-				return operatorID = SILVER;
-			else if (uCuType.uCuType = GOLD && rgOperator[REGULAR].n < rgOperator[REGULAR].uNumOperators)
-				return operatorID = REGULAR;
-			else 
-				return null;
 		}
-	        //Hang Gong edited for Get OperatorId
+		if (icCall.uCuType == Constants.GOLD) {
+			if (model.rgOperator[Constants.GOLD].n < model.rgOperator[Constants.GOLD].uNumOperators)
+				operatorID = Constants.GOLD;
+			if (model.rgOperator[Constants.SILVER].n < model.rgOperator[Constants.SILVER].uNumOperators)
+				operatorID = Constants.SILVER;
+			else if ((model.rgOperator[Constants.REGULAR].n < model.rgOperator[Constants.REGULAR].uNumOperators))
+				operatorID = Constants.REGULAR;
+		
+		}
+	 
+		return operatorID;
+		
+	}
+	    //Hang Gong edited for Get OperatorId
 		protected int GetOperatorToServe(){
 			int operatorId=-1;
 			 for (int opType = 2; opType >= 0; opType--) { //Prioritize GOLD operators
@@ -61,15 +64,15 @@ public class UDPs {
 			 for (int caType = 2; caType >= 0; caType--) { //Prioritize GOLD operators
 		            if(model.rgOperator[caType].n < model.rgOperator[caType].uNumOperators) {
 		                if (!model.qCallLine.get(Constants.GOLD).isEmpty()){
-		                    CallId = CONSTANTS.GOLD;
+		                    CallId = Constants.GOLD;
 		                    break;
 		                } else if ((caType == Constants.REGULAR || caType == Constants.SILVER)
 		                        && !model.qCallLine.get(Constants.SILVER).isEmpty()) {
-		                    CallId = CONSTANTS.SILVER;
+		                    CallId = Constants.SILVER;
 		                    break;
 		                } else if (caType == Constants.REGULAR
 		                        && !model.qCallLine.get(Constants.REGULAR).isEmpty()) {
-		                    CallId = CONSTANTS.REGULAR;
+		                    CallId = Constants.REGULAR;
 		                    break;
 		                }
 		            }
@@ -79,19 +82,19 @@ public class UDPs {
                 //Hang Gong edited for UPdateWaitCallsOutput Call for service//
 		protected void UpdateWaitCallsOutput(Call icCall){
 			 icCall.waitTime = model.getClock() - icCall.startWaitTime;
-			 if(icCall.uType == Constants.REGULAR){
+			 if(icCall.uCuType == Constants.REGULAR){
 				 model.output.numRegularCalls ++;
 				 if(icCall.waitTime > 900 )
 					 model.output.num900SecRegularCalls ++;
 				 model.output.perc900SecRegularCalls = model.output.num900SecRegularCalls/model.output.numRegularCalls;
 			 }
-			 else if(icCall.uType==Constants.SILVER){
+			 else if(icCall.uCuType==Constants.SILVER){
 				 model.output.numSilverCalls ++;
 				 if(icCall.waitTime > 180)
 					 model.output.num180SecSilverCalls ++;
 				 model.output.perc180SecSilverCalls = model.output.num180SecSilverCalls/model.output.numSilverCalls;
 			 }
-			 else if(icCall.uType == Constants.GOLD){
+			 else if(icCall.uCuType == Constants.GOLD){
 				 model.output.numGoldCalls ++;
 				 if(icCall.waitTime > 90)
 					 model.output.num90SecGoldCalls ++;
@@ -123,7 +126,3 @@ public class UDPs {
 			}
 		}
 }
-
-
-
-
