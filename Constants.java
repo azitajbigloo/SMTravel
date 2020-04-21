@@ -19,7 +19,7 @@ public class Constants {
     final static String[] CALLTYPE = {"INFO", "RSRVN" , "CHNG"};  		// Call Type (Information, Reserving or Changing)
 	
     
-	// this numbers come from the project goal, the first 3 of five.
+	// this numbers come from the project goal but seconds converted to minues, the first 3 of five,.
     final static double[] LONG_WAIT_THRESHOLD = {
             15,  //REGULAR
             3,   //SILVER
