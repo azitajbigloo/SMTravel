@@ -1,13 +1,9 @@
 package SMTravelSimulation;
-
 import simulationModelling.ScheduledAction;
-import SMTravelSimulation.Operator.*;
-import simulationModelling.ScheduledAction;
-
+/*
+ * Scheduled action: Initialise
+ */
 public class Initialise extends ScheduledAction{
-	
-	
-
 
 		SMTravel model;
 		
@@ -22,11 +18,14 @@ public class Initialise extends ScheduledAction{
 		
 		public void actionEvent() {
 			// System Initialization
-			model.qCallLine[Constants.GOLD].clear();
-	        model.qCallLine[Constants.SILVER].clear();
-	        model.qCallLine[Constants.REGULAR].clear();
-			//Hang Gong comments: if we use arraylist it should initialze like that:
-                        //model.qCallLine.get(Constants.GOLD).clear();
+			model.qCallLine.get(Constants.GOLD).clear();
+			model.qCallLine.get(Constants.SILVER).clear();
+			model.qCallLine.get(Constants.REGULAR).clear();
+			//model.qCallLine[Constants.GOLD].clear();
+	        //model.qCallLine[Constants.SILVER].clear();
+	        //model.qCallLine[Constants.REGULAR].clear();
+			//Hang Gong comments: if we use array list it should initialize like that:
+                     //model.qCallLine.get(Constants.GOLD).clear();
 	                //model.qCallLine.get(Constants.SILVER).clear();
 	                //model.qCallLine.get(Constants.REGULAR).clear();
 			model.rgOperator[Constants.GOLD].group.clear();
