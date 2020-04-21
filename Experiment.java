@@ -8,12 +8,11 @@ import cern.jet.random.engine.*;
 // 
 class Experiment
 {
-   static int [] [] schedules =
+   static int [] [] schedule =
    {
-		   { 2, 2, 2, 2, 2},  // Case 1 (Base case)
-		   { 2, 3, 2, 3, 2},  // Case 2
-		   { 1, 3, 1, 3, 1},  // Case 3
-		   { 1, 3, 2, 3, 1}  // Case 4		   
+	{ ？, ？, ？, ？}, 
+	{ ？, ？, ？, ？}, 
+	{ ？, ？, ？, ？},    
    };
    public static void main(String[] args)
    {
@@ -31,7 +30,7 @@ class Experiment
        System.out.println(" Case 1");
        for(i=0 ; i < NUMRUNS ; i++)
        {
-          SMT1 = new SMTravel(startTime,endTime,schedule[0],55,15,sds[i],ture);
+          SMT1 = new SMTravel(startTime,endTime,schedule,55,15,sds[i],ture);
           SMT1.runSimulation();
           System.out.println("Perc900SecRegularCalls:"+SMT1.getPerc900SecRegularCalls())
           System.out.println("Perc180SecSilverCalls:"+SMT1.getPerc180SecSilverCalls())
