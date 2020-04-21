@@ -17,5 +17,13 @@ public class Constants {
     final static int CHNG = 2;  		// Identifier for Change call type
     final static String[] CUSTOMERTYPE = {"REGULAR", "SILVER", "GOLD"}; 		// Customer Type (Regular, Silver or Gold)
     final static String[] CALLTYPE = {"INFO", "RSRVN" , "CHNG"};  		// Call Type (Information, Reserving or Changing)
+	
+    
+	// this numbers come from the project goal, the first 3 of five.
+    final static double[] LONG_WAIT_THRESHOLD = {
+            15,  //REGULAR
+            3,   //SILVER
+            1.5  //GOLD
+    };
 
 }
