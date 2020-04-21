@@ -7,14 +7,14 @@ public class AfterCall extends SequelActivity{
 		
 	SMTravel model;		// Access to the SMTravel model
 	private Call icCall;
-	private int operatorID;
+	//private int operatorID;  //do not need operatorID here
 	private int operatorType;
 	   
 	// Constructor
 	AfterCall(SMTravel model, Call icCall, int operatorType) {
 		this.model = model;
 		this.icCall = icCall;
-		this.operatorID = operatorID;  
+		//this.operatorID = operatorID;  //do not need operatorID here
 		this.operatorType = operatorType;  
 	}
 
@@ -28,7 +28,12 @@ public class AfterCall extends SequelActivity{
 	}
 		   
 	protected void terminatingEvent(){
-		model.rgOperator[operatorID].numBusy -= 1;
+		model.rgOperator[operatorType].numBusy -= 1;	//operatorID changed to operatorType
+		
 		        
 	}
 }
+
+
+ 
+
