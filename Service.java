@@ -1,7 +1,5 @@
 package SMTravelSimulation;
 import java.util.ArrayList;
-
-
 import simulationModelling.ConditionalActivity;
 /*
  * Conditional Activity Service 
@@ -19,7 +17,12 @@ public class Service extends ConditionalActivity{
 	     this.operatorType = operatorType;
 	     this.callType = callType;
 	   }
-	   // IF THE CanService return True the service start.
+	   // added for the initialise action and activities in SMTravel Class
+	   public Service(SMTravel model) {
+		// TODO Auto-generated constructor stub
+		   this.model = model;
+	}
+	// IF THE CanService return True the service start.
 	   protected static boolean precondition(SMTravel model)
 	   {
 	      boolean returnValue = false;
@@ -33,16 +36,16 @@ public class Service extends ConditionalActivity{
 		  operatorType = model.udp.GetOperatorToServe();
 		  callType = model.udp.GetCallToServe();
 		  icCall = model.qCallLine.get(callType).remove(0);
-	      model.rgOperator[operatorType].insertGrp(icCall);
+	     // model.rgOperator[operatorType].insertGrp(icCall);
 	      model.rgOperator[operatorType].numBusy++;
 	   }
 	   protected double duration(){
-	        return (model.rvp.uSrvTm(icCall.uType,operatorType));//Call attrubute need to change based on the type
+	        return (model.rvp.uSrvTm(icCall.uCaType, operatorType));//Call attribute need to change based on the type
 	    }
 	   protected void terminatingEvent(){
 	        model.rgTrunkLine.removeGrp(icCall);
 
-	        //model.rgTrunkLine.numTrunkLineInUse--; no attribute for this in use trunklines.//
-	        AfterCall afterCall = new AfterCall(model, operatorType, icCall);//
+	        //model.rgTrunkLine.numTrunkLineInUse--; no attribute for this in use trunk lines.//
+	        AfterCall afterCall = new AfterCall(model, icCall, operatorType);//
 	        model.spStart(afterCall);
 	   }}
