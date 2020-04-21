@@ -15,7 +15,8 @@ public class SMTravel extends AOSimulationModel{
 /*----------------------Entity Data Structures--------------------------*/
 	/* Group and Queue Entities */
 		Operator[] rgOperator = new Operator[3];
-		Queue[] qCallLine = new Queue[3];
+		//Queue[] qCallLine = new Queue[3];
+		ArrayList<ArrayList<Call>> qCallLine = new ArrayList<ArrayList<Call>>(3);
 	         //HANG GONG comments: CHANGE aboeve to ArrayList<ArrayList<Call>> qCallLine = new ArrayList<ArrayList<Call>>(3);
 	         // and then we use the methods like qcallline.get(id) to define the gold, silver, regular. and get the call like
 	         // icCALL=qcallline.get(CONSTANTS.GOLD).remove(0): the first call to be served in each queue
@@ -47,13 +48,13 @@ public class SMTravel extends AOSimulationModel{
 			 
 				
 			// Initialize Parameters
-			qCallLine[0] = new LinkedList<Call>();
-			qCallLine[1] = new LinkedList<Call>();
-			qCallLine[2] = new LinkedList<Call>();
-                        // HANG GONG COMMENTS: ArrayList<ArrayList<Call>> qCallLine = new ArrayList<ArrayList<Call>>(3);
-			//qCallLine.add(Constants.GOLD, new ArrayList<Call>());
-		        //qCallLine.add(Constants.SILVER, new ArrayList<Call>());
-		        //qCallLine.add(Constants.REGULAR, new ArrayList<Call>());
+			//qCallLine[0] = new LinkedList<Call>();
+			//qCallLine[1] = new LinkedList<Call>();
+			//qCallLine[2] = new LinkedList<Call>();
+            // HANG GONG COMMENTS: ArrayList<ArrayList<Call>> qCallLine = new ArrayList<ArrayList<Call>>(3);
+			qCallLine.add(Constants.GOLD, new ArrayList<Call>());
+		    qCallLine.add(Constants.SILVER, new ArrayList<Call>());
+		    qCallLine.add(Constants.REGULAR, new ArrayList<Call>());
 			rgTrunkLine = new TrunkLines(numTrunkLine, numReservedLine);
        
 			rgOperator[Constants.REGULAR] = new Operator(schedule[Constants.REGULAR]);
@@ -235,14 +236,3 @@ public class SMTravel extends AOSimulationModel{
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
