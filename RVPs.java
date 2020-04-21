@@ -1,5 +1,3 @@
-
-
 package SMTravelSimulation;
 import cern.jet.random.Exponential;
 import cern.jet.random.engine.MersenneTwister;
@@ -37,8 +35,8 @@ class RVPs
                     new MersenneTwister(sd.arrCardholder[i]));
         }
        
-        dmCaType = new MersenneTwister(sd.cardholderType);
-        dmCuType = new MersenneTwister(sd.customerType);
+        dmCaType = new MersenneTwister(sd.callType);
+        dmCuType = new MersenneTwister(sd.cardholderType);
         dmSrvTm = new TriangularVariate[3];
         dmAftCallWrkTm = new Uniform[3];
         for (int i = 0; i < 3; i++){
