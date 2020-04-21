@@ -25,57 +25,57 @@ class StaffChange extends ScheduledAction {
 
 // ON work
 	    if(model.getClock() == staffChangeTimeSeq[0]) {
-			model.rgOperator[REGULAR].uNumOperators = model.rgOperator[REGULAR].uShift[0];
-			model.rgOperator[SILVER].uNumOperators = model.rgOperator[SILVER].uShift[0];
-			model.rgOperator[GOLD].uNumOperators = model.rgOperator[GOLD].uShift[0];
+			model.rgOperator[Contants.REGULAR].uNumOperators = model.rgOperator[Contants.REGULAR].uShift[0];
+			model.rgOperator[Contants.SILVER].uNumOperators = model.rgOperator[Contants.SILVER].uShift[0];
+			model.rgOperator[Contants.GOLD].uNumOperators = model.rgOperator[Contants.GOLD].uShift[0];
 		}
 	    else if(model.getClock() == staffChangeTimeSeq[1]) {
-	    	model.rgOperator[REGULAR].uNumOperators += model.rgOperator[REGULAR].uShift[1];
-			model.rgOperator[SILVER].uNumOperators += model.rgOperator[SILVER].uShift[1];
-			model.rgOperator[GOLD].uNumOperators += model.rgOperator[GOLD].uShift[1];
+	    		model.rgOperator[Contants.REGULAR].uNumOperators += model.rgOperator[Contants.REGULAR].uShift[1];
+			model.rgOperator[Contants.SILVER].uNumOperators += model.rgOperator[Contants.SILVER].uShift[1];
+			model.rgOperator[Contants.GOLD].uNumOperators += model.rgOperator[Contants.GOLD].uShift[1];
 	    }
 	    else if(model.getClock() == staffChangeTimeSeq[2]) {
-	    	model.rgOperator[REGULAR].uNumOperators += model.rgOperator[REGULAR].uShift[2];
-			model.rgOperator[SILVER].uNumOperators += model.rgOperator[SILVER].uShift[2];
-			model.rgOperator[GOLD].uNumOperators += model.rgOperator[GOLD].uShift[2];
+	    		model.rgOperator[Contants.REGULAR].uNumOperators += model.rgOperator[Contants.REGULAR].uShift[2];
+			model.rgOperator[Contants.SILVER].uNumOperators += model.rgOperator[Contants.SILVER].uShift[2];
+			model.rgOperator[Contants.GOLD].uNumOperators += model.rgOperator[Contants.GOLD].uShift[2];
 	    }
 	    else if(model.getClock() == staffChangeTimeSeq[3]) {
-	    	model.rgOperator[REGULAR].uNumOperators += model.rgOperator[REGULAR].uShift[3];
-			model.rgOperator[SILVER].uNumOperators += model.rgOperator[SILVER].uShift[3];
-			model.rgOperator[GOLD].uNumOperators += model.rgOperator[GOLD].uShift[3];
+	    		model.rgOperator[Contants.REGULAR].uNumOperators += model.rgOperator[Contants.REGULAR].uShift[3];
+			model.rgOperator[Contants.SILVER].uNumOperators += model.rgOperator[Contants.SILVER].uShift[3];
+			model.rgOperator[Contants.GOLD].uNumOperators += model.rgOperator[Contants.GOLD].uShift[3];
 	    }
 	    else if(model.getClock() == staffChangeTimeSeq[4]) {
-	    	model.rgOperator[REGULAR].uNumOperators += model.rgOperator[REGULAR].uShift[4];
-			model.rgOperator[SILVER].uNumOperators += model.rgOperator[SILVER].uShift[4];
-			model.rgOperator[GOLD].uNumOperators += model.rgOperator[GOLD].uShift[4];
+	    		model.rgOperator[Contants.REGULAR].uNumOperators += model.rgOperator[Contants.REGULAR].uShift[4];
+			model.rgOperator[Contants.SILVER].uNumOperators += model.rgOperator[Contants.SILVER].uShift[4];
+			model.rgOperator[Contants.GOLD].uNumOperators += model.rgOperator[Contants.GOLD].uShift[4];
 	    }
 	    
 // OFF work
 	    
 	    else if(model.getClock() == staffChangeTimeSeq[5]) {
-	    	model.rgOperator[REGULAR].uNumOperators -= model.rgOperator[REGULAR].uShift[0];
-			model.rgOperator[SILVER].uNumOperators -= model.rgOperator[SILVER].uShift[0];
-			model.rgOperator[GOLD].uNumOperators -= model.rgOperator[GOLD].uShift[0];
+	    		model.rgOperator[Contants.REGULAR].uNumOperators -= model.rgOperator[Contants.REGULAR].uShift[0];
+			model.rgOperator[Contants.SILVER].uNumOperators -= model.rgOperator[Contants.SILVER].uShift[0];
+			model.rgOperator[Contants.GOLD].uNumOperators -= model.rgOperator[Contants.GOLD].uShift[0];
 	    }
 	    else if(model.getClock() == staffChangeTimeSeq[6]) {
-	    	model.rgOperator[REGULAR].uNumOperators -= model.rgOperator[REGULAR].uShift[1];
-			model.rgOperator[SILVER].uNumOperators -= model.rgOperator[SILVER].uShift[1];
-			model.rgOperator[GOLD].uNumOperators -= model.rgOperator[GOLD].uShift[1];
+	    		model.rgOperator[Contants.REGULAR].uNumOperators -= model.rgOperator[Contants.REGULAR].uShift[1];
+			model.rgOperator[Contants.SILVER].uNumOperators -= model.rgOperator[Contants.SILVER].uShift[1];
+			model.rgOperator[Contants.GOLD].uNumOperators -= model.rgOperator[Contants.GOLD].uShift[1];
 	    }
 	    else if(model.getClock() == staffChangeTimeSeq[7]) {
-	    	model.rgOperator[REGULAR].uNumOperators -= model.rgOperator[REGULAR].uShift[2];
-			model.rgOperator[SILVER].uNumOperators -= model.rgOperator[SILVER].uShift[2];
-			model.rgOperator[GOLD].uNumOperators -= model.rgOperator[GOLD].uShift[2];
+	    		model.rgOperator[Contants.REGULAR].uNumOperators -= model.rgOperator[Contants.REGULAR].uShift[2];
+			model.rgOperator[Contants.SILVER].uNumOperators -= model.rgOperator[Contants.SILVER].uShift[2];
+			model.rgOperator[Contants.GOLD].uNumOperators -= model.rgOperator[Contants.GOLD].uShift[2];
 	    }
 	    else if(model.getClock() == staffChangeTimeSeq[8]) {
-	    	model.rgOperator[REGULAR].uNumOperators -= model.rgOperator[REGULAR].uShift[3];
-			model.rgOperator[SILVER].uNumOperators -= model.rgOperator[SILVER].uShift[3];
-			model.rgOperator[GOLD].uNumOperators -= model.rgOperator[GOLD].uShift[3];
+	    		model.rgOperator[Contants.REGULAR].uNumOperators -= model.rgOperator[Contants.REGULAR].uShift[3];
+			model.rgOperator[Contants.SILVER].uNumOperators -= model.rgOperator[Contants.SILVER].uShift[3];
+			model.rgOperator[Contants.GOLD].uNumOperators -= model.rgOperator[Contants.GOLD].uShift[3];
 	    }
 	    else if(model.getClock() == staffChangeTimeSeq[9]) {
-	    	model.rgOperator[REGULAR].uNumOperators -= model.rgOperator[REGULAR].uShift[4];
-			model.rgOperator[SILVER].uNumOperators -= model.rgOperator[SILVER].uShift[4];
-			model.rgOperator[GOLD].uNumOperators -= model.rgOperator[GOLD].uShift[4];
+	    		model.rgOperator[Contants.REGULAR].uNumOperators -= model.rgOperator[Contants.REGULAR].uShift[4];
+			model.rgOperator[Contants.SILVER].uNumOperators -= model.rgOperator[Contants.SILVER].uShift[4];
+			model.rgOperator[Contants.GOLD].uNumOperators -= model.rgOperator[Contants.GOLD].uShift[4];
 	    }
 		
 	    else System.out.println("Invalid time to schedule employees:"+model.getClock());
