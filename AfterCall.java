@@ -32,7 +32,3 @@ public class AfterCall extends SequelActivity{
 		        
 	}
 }
-
-
- 
-
