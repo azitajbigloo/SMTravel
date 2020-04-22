@@ -18,18 +18,17 @@ public class RegularCallArrival extends ScheduledAction{
 	    @Override
 	    protected void actionEvent() {
 			// Arrival Action Sequence SCS
-	    	Call icCall = null; //    ?????
-	    	icCall = model.spDerive(icCall); // ???
-	    	// Call icCall = new Call();
-	    	icCall.uCuType = Constants.REGULAR;   // Set Customer type to REGULAR
-	    	icCall.uCaType = model.rvp.uCaType();	 
+	    	Call icCall = new Call();
+	    	icCall.uType = Constants.REGULAR;   // Set Customer type to REGULAR
+	    	icCall.uSubject = model.rvp.uCuType();
 	    	model.udp.UpdateNumArrivalsOutput(icCall);
+	    	icCall = model.spDerive(icCall);
 	    	//If there is an available trunk line add the Call
 	    	if(model.rgTrunkLine.n < (model.rgTrunkLine.numLines - model.rgTrunkLine.numReserved)) {
 	    		model.spInsertGrp(model.rgTrunkLine, icCall);
 	    		//model.rgTrunkLine.add(icCall);
 	    		EstimateWaitTime estWTime = new EstimateWaitTime(model, icCall); // Initiate next event
-				model.spStartSequel(estWTime); 
+				model.spStart(estWTime); 
 	    	}
 	    	else {
 	    		// Call receives busy signal and leaves.
@@ -38,4 +37,3 @@ public class RegularCallArrival extends ScheduledAction{
 	    	}
 	    }
 }	
-
