@@ -7,25 +7,15 @@ import java.util.*;
 // The Simulation Model Class
 public class SMTravel extends AOSimulationModel{
 	
-	private boolean traceFlag;
-	// Constants available from Constants class
-		/* Parameter */
-	        
+	    protected boolean traceFlag;
+    
 
 /*----------------------Entity Data Structures--------------------------*/
 	/* Group and Queue Entities */
 		Operator[] rgOperator = new Operator[3];
-		//Queue[] qCallLine = new Queue[3];
 		ArrayList<ArrayList<Call>> qCallLine = new ArrayList<ArrayList<Call>>(3);
-	         //HANG GONG comments: CHANGE aboeve to ArrayList<ArrayList<Call>> qCallLine = new ArrayList<ArrayList<Call>>(3);
-	         // and then we use the methods like qcallline.get(id) to define the gold, silver, regular. and get the call like
-	         // icCALL=qcallline.get(CONSTANTS.GOLD).remove(0): the first call to be served in each queue
 		//protected ArrayList<Call> qCallLine = new ArrayList<Call>(); // Line
 		TrunkLines rgTrunkLine;
-		
-		// Define the reference variables to the various 
-		// entities with scope Set and Unary
-		// Objects can be created here or in the Initialise Action
 
 	/* Input Variables */
 		// Define any Independent Input Variables here
@@ -38,40 +28,47 @@ public class SMTravel extends AOSimulationModel{
 		protected Output output = new Output(this);
 		// Output values - define the public methods that return values
 		// required for experimentation.
-		
+		//The percentage of regular calls that exceeded the 900 second wait time.
+		public double getPerc900SecRegularCalls(){
+			 return output.get900();
+		}
+		//The  percentage of silver calls that exceeded the 180 second wait time.
+		public double getPerc180SecSilverCalls(){
+			 return output.get180();
+		}
+		//The percentage of gold calls that exceeded the 90 second wait time.
+		public double getPerc90SecGoldCalls(){
+			return output.get90();
+		}
+		//The percentage of card hold calls that receive busy signal.
+		public double getPercBusyCrdHCalls(){
+			return output.getbusycrd();
+		}
+		//The percentage of regular calls that receive a busy signal.
+		public double getPercBusyRegularCalls(){
+			return output.getbusyReg();
+		}
 		//Constructor + Initializes the model
 		public SMTravel(double t0time, double tftime, int[][] schedule, int numTrunkLine,
            int numReservedLine, Seeds sd, boolean traceFlag) {
 		
 			// Tracing
 			 this.traceFlag = traceFlag;
-			 
-				
 			// Initialize Parameters
-			//qCallLine[0] = new LinkedList<Call>();
-			//qCallLine[1] = new LinkedList<Call>();
-			//qCallLine[2] = new LinkedList<Call>();
-            // HANG GONG COMMENTS: ArrayList<ArrayList<Call>> qCallLine = new ArrayList<ArrayList<Call>>(3);
-			qCallLine.add(Constants.GOLD, new ArrayList<Call>());
-		    qCallLine.add(Constants.SILVER, new ArrayList<Call>());
-		    qCallLine.add(Constants.REGULAR, new ArrayList<Call>());
-			rgTrunkLine = new TrunkLines(numTrunkLine, numReservedLine);
-       
+			rgTrunkLine = new TrunkLines(numTrunkLine,numReservedLine);
 			rgOperator[Constants.REGULAR] = new Operator(schedule[Constants.REGULAR]);
 			rgOperator[Constants.SILVER] = new Operator(schedule[Constants.SILVER]);
 			rgOperator[Constants.GOLD] = new Operator(schedule[Constants.GOLD]);
-		
+			qCallLine.add(Constants.REGULAR, new ArrayList<Call>());
+			qCallLine.add(Constants.SILVER, new ArrayList<Call>());
+			qCallLine.add(Constants.GOLD, new ArrayList<Call>());
 			// Initialize classes
 			// Create RVP object with given seed
-			rvp = new RVPs(this, sd);
-	
-		
-// rgCounter and qCustLine objects created in Initalise Action
-		
-
+			rvp = new RVPs(this, sd);		
+            // rgCounter and qCustLine objects created in Initalise Action
 			// Initialize the Simulation Model
 			initAOSimulModel(t0time,tftime);
-		
+		    closingTime = tftime;
 			// Schedule the first arrivals and employee scheduling
 			Initialise init = new Initialise(this);
 			scheduleAction(init);  // Should always be first one scheduled.
@@ -85,14 +82,7 @@ public class SMTravel extends AOSimulationModel{
 			// Schedule other scheduled actions and activities here
 
 		}
-
-		public SMTravel(double t0time, double tftime, int[][] schedule, int numTrunkLine, int numReservedLine, Seeds sd) {
-			this(t0time, tftime, schedule, numTrunkLine, numReservedLine, sd, false);
-		}
 	
-	 
-	 
-	//*** dont know this part ***********************************//
 /***************** Implementation of Data Modules ************/
 	/*
 	* Testing preconditions
@@ -107,10 +97,10 @@ public class SMTravel extends AOSimulationModel{
 			Service act = new Service(this);
 			act.startingEvent();
 			scheduleActivity(act);
-			//statuChange = true;
+			//statusChange = true;
 		}
 		// Check preconditions of Interruptions in Extended Activities
-		if (EstimateWaitTime.interruptionPreCond(this) == 1) {
+		if (EstimateWaitTime.interruptionPreCond() == 1) {
 			EstimateWaitTime act = new EstimateWaitTime(this);
 			act.startingEvent();
 			scheduleActivity(act);
@@ -121,7 +111,6 @@ public class SMTravel extends AOSimulationModel{
 
 	
 	}
-	
 	public void eventOccured()
 	{
 //******************************************		
@@ -137,9 +126,9 @@ public class SMTravel extends AOSimulationModel{
             System.out.printf("Clock: %-9.3f RG.TrunkLines.n: %d\n",
                     getClock(), rgTrunkLine.n);
             System.out.printf("Q.CallLine[REGULAR].n: %d Q.CallLine[SILVER].n: %d Q.CallLine[GOLD].n %d\n",
-                    qCallLine[Constants.REGULAR].size(),
-                    qCallLine[Constants.SILVER].size(),
-                    qCallLine[Constants.GOLD].size());
+                    qCallLine.get(Constants.REGULAR).size(),
+                    qCallLine.get(Constants.SILVER).size(),
+                    qCallLine.get(Constants.GOLD).size());
             System.out.printf("RG.Operator[REGULAR].n: %d\n",
                     rgOperator[Constants.REGULAR].n);
             System.out.printf("RG.Operator[SILVER].n:  %d\n",
@@ -150,26 +139,7 @@ public class SMTravel extends AOSimulationModel{
 		}
 	}
 	
-	//The percentage of regular calls that exceeded the 900 second wait time.
-	public double getPerc900SecRegularCalls(){
-		 return output.perc900SecRegularCalls;
-	}
-	//The  percentage of silver calls that exceeded the 180 second wait time.
-	public double getPerc180SecSilverCalls(){
-		 return output.perc180SecSilverCalls;
-	}
-	//The percentage of gold calls that exceeded the 90 second wait time.
-	public double getPerc90SecGoldCalls(){
-		return output.perc90SecGoldCalls;
-	}
-	//The percentage of card hold calls that receive busy signal.
-	public double getPercBusyCrdHCalls(){
-		return output.percBusyCrdHCalls;
-	}
-	//The percentage of regular calls that receive a busy signal.
-	public double getPercBusyRegularCalls(){
-		return output.percBusyRegularCalls;
-	}
+	
 	
 	
 	protected double closingTime; // closing time of the call center
@@ -198,7 +168,6 @@ public class SMTravel extends AOSimulationModel{
 		seqAct.startingEvent();
 		scheduleActivity(seqAct);
 	}
-		
 	public Call spDerive(Call icCall) {
 		 return (icCall = new Call());
 	}
@@ -206,33 +175,24 @@ public class SMTravel extends AOSimulationModel{
 	// Insert the call into the RG.TrunkLine
 	public void spInsertGrp(TrunkLines rgTrunkLine, Call icCall) {
 		//rgTrunkLine.add(icCall);
-		rgTrunkLine.insertGrp(icCall);	
+		rgTrunkLine.insertList(icCall);	
 	}
 	
 	// remove object from group
 	public void spRemoveGrp(TrunkLines rgTrunkLine, Call icCall) {
-		//rgTrunkLine.remove(icCall);
-		rgTrunkLine.removeGrp(icCall);
+		rgTrunkLine.removeList(icCall);
 		
 	}
 	// Insert object to queue
-	public void spInsertQue(Queue qCallLine, Call icCall) {
-	//	 qCallLine[icCall.uCuType].add(icCall);
-		 qCallLine[icCall.uCuType].spInsertQue(icCall);
-	}
 	
 	// Leave
 	public void spLeave(Call icCall) {
-	//	rgTrunkline = this.rgTrunkLine;
-	//remove(icCall);
-		rgTrunkLine.removeGrp(icCall);
-		qCallLine[icCall.uCuType].spRemoveQue(icCall);
-		// how??
+		rgTrunkLine.removeList(icCall);
 		}
 	
 	// Terminate
 	public void spTerminate() {
-		// dont know
 	}
 
 }
+
