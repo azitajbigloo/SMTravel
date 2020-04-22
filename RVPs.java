@@ -1,3 +1,4 @@
+
 package SMTravelSimulation;
 import cern.jet.random.Exponential;
 import cern.jet.random.engine.MersenneTwister;
@@ -7,7 +8,7 @@ import dataModelling.TriangularVariate;
 class RVPs
 {
     SMTravel model; // for accessing the clock
-    // Data Models - i.e. random variate generators for distributions
+    // Data Models - i.e. random generators for distributions
     // are created using Colt classes, define
     // reference variables here and create the objects in the
     // constructor with seeds
@@ -35,8 +36,8 @@ class RVPs
                     new MersenneTwister(sd.arrCardholder[i]));
         }
        
-        dmCaType = new MersenneTwister(sd.callType);
-        dmCuType = new MersenneTwister(sd.cardholderType);
+        dmCaType = new MersenneTwister(sd.cardholderType);
+        dmCuType = new MersenneTwister(sd.callSubject);
         dmSrvTm = new TriangularVariate[3];
         dmAftCallWrkTm = new Uniform[3];
         for (int i = 0; i < 3; i++){
@@ -53,7 +54,7 @@ class RVPs
             );
         }
         dmWaitTmTolerated = new Uniform[2];
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
         	dmWaitTmTolerated[i] = new Uniform(
                     TOLERATED_WAITTIME[i][MIN],
                     TOLERATED_WAITTIME[i][MAX],
