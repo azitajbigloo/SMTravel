@@ -18,15 +18,16 @@ public class CardHolderCallArrival extends ScheduledAction {
 	    @Override
 	    protected void actionEvent() {
 	    	// Arrival Action Sequence SCS
-	    	Call icCall = model.spDerive(icCall);   //*** not sure
-	    	icCall.uCaType = model.rvp.uCaType();
+	    	Call icCall = new Call();
+	    	icCall = model.spDerive(icCall);  
+	    	icCall.uType = model.rvp.uCuType();
+	    	icCall.uSubject = model.rvp.uCaType();
 	    	model.udp.UpdateNumArrivalsOutput(icCall);
 	    	//If there is an available trunk line add the Call
 	    	if(model.rgTrunkLine.n < model.rgTrunkLine.numLines) {
 	    		model.spInsertGrp(model.rgTrunkLine, icCall);
-	    		//model.rgTrunkLine.add(icCall);
 	    		InputMemberNumber inputMNum = new InputMemberNumber(model, icCall);
-	    		model.spStartSequel(inputMNum);
+	    		model.spStart(inputMNum);
 	    	}
 	    	else {
 	    		// Call receives busy signal and leaves.
@@ -35,4 +36,3 @@ public class CardHolderCallArrival extends ScheduledAction {
 	    	}
 	    }	
 }
-
