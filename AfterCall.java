@@ -1,3 +1,4 @@
+
 package SMTravelSimulation;
 import simulationModelling.SequelActivity;
 /*
@@ -7,14 +8,12 @@ public class AfterCall extends SequelActivity{
 		
 	SMTravel model;		// Access to the SMTravel model
 	private Call icCall;
-	//private int operatorID;  //do not need operatorID here  - hossein
 	private int operatorType;
 	   
 	// Constructor
 	AfterCall(SMTravel model, Call icCall, int operatorType) {
 		this.model = model;
 		this.icCall = icCall;
-		//this.operatorID = operatorID;  //do not need operatorID here
 		this.operatorType = operatorType;  
 	}
 
@@ -24,16 +23,11 @@ public class AfterCall extends SequelActivity{
 	}
 		   
 	protected double duration(){
-		return model.rvp.uAftCallWrkTm(icCall.uCaType, operatorType);
+		return model.rvp.uAftCallWrkTm(icCall.uSubject, operatorType);
 	}
 		   
 	protected void terminatingEvent(){
-		model.rgOperator[operatorType].numBusy -= 1;	//operatorID changed to operatorType  - hossein
-		
+		model.rgOperator[operatorType].numBusy -= 1;
 		        
 	}
 }
-
-
- 
-
