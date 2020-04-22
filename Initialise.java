@@ -1,9 +1,11 @@
 package SMTravelSimulation;
+
 import simulationModelling.ScheduledAction;
-/*
- * Scheduled action: Initialise
- */
+
 public class Initialise extends ScheduledAction{
+	
+	
+
 
 		SMTravel model;
 		
@@ -19,20 +21,14 @@ public class Initialise extends ScheduledAction{
 		public void actionEvent() {
 			// System Initialization
 			model.qCallLine.get(Constants.GOLD).clear();
-			model.qCallLine.get(Constants.SILVER).clear();
-			model.qCallLine.get(Constants.REGULAR).clear();
-			//model.qCallLine[Constants.GOLD].clear();
-	        //model.qCallLine[Constants.SILVER].clear();
-	        //model.qCallLine[Constants.REGULAR].clear();
-			//Hang Gong comments: if we use array list it should initialize like that:
-                     //model.qCallLine.get(Constants.GOLD).clear();
-	                //model.qCallLine.get(Constants.SILVER).clear();
-	                //model.qCallLine.get(Constants.REGULAR).clear();
+	        model.qCallLine.get(Constants.SILVER).clear();
+	        model.qCallLine.get(Constants.REGULAR).clear();
+
 			model.rgOperator[Constants.GOLD].group.clear();
 			model.rgOperator[Constants.SILVER].group.clear();
 			model.rgOperator[Constants.REGULAR].group.clear();
 		
-			model.rgTrunkLine.group.clear();
+			model.rgTrunkLine.list.clear();
 			
 			// Initialize the output variables
 			model.output.numGoldCalls = 0;
