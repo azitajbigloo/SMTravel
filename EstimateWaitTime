@@ -1,6 +1,6 @@
 package SMTravelSimulation;
 import simulationModelling.ExtSequelActivity;
-import simulationModelling.SequelActivity;
+
 /*
  * Extended Sequel Activity EstimateWaitTime
  */
@@ -18,16 +18,16 @@ public class EstimateWaitTime extends ExtSequelActivity{
 	EstimateWaitTime(SMTravel model){} //created this for interruption preconditon in smtravel class
 	
 	public void startingEvent() {
-		icCall.startWaitTime = model.getClock(); 	
+		
 	}
 	
 	protected double duration() {
 		return Constants.EWTVOICEDURATION;
 	}
 	
-	public static int interruptionPreCond(SMTravel model){  // added the smtravel model for interruption preconditon in smtravel class
+	public int interruptionPreCond(){  // added the smtravel model for interruption preconditon in smtravel class
 		int interruptID = 0;
-		if((model.udp.CanServiceCall(icCall.uCuType) != null) && (CheckEmptyQueue(icCall.uCuType) == true)) 
+		if(model.udp.GetOperatorToServe() == -1 && model.udp.GetCallToServe() == -1) 
 			interruptID = 1;
 		
 		return interruptID;
@@ -35,17 +35,17 @@ public class EstimateWaitTime extends ExtSequelActivity{
 	public void interruptionSCS(int interruptID){
 		interruptID = interruptionPreCond();
 		if (interruptID == 1) {
-			model.spInsertQue(model.qCallLine[icCall.uCuType], icCall);
+			model.qCallLine.get(icCall.uType).add(icCall);
 			model.spTerminate();
 		}
 	}
 	protected void terminatingEvent() {
-	double waitTime = CalculateWaitTime(icCall.uCuType);
-		if(model.rvp.uWaitTmTolerance(icCall.uCuType) < waitTime) {
+	 icCall.waitTime = CalculateWaitTime(icCall.uType);
+		if(model.rvp.uWaitTmTolerance(icCall.uType) < icCall.waitTime) {
 			model.spLeave(icCall);
 		}
 		else {
-			model.spInsertQue(model.qCallLine[icCall.uCuType], icCall);
+			model.qCallLine.get(icCall.uType).add(icCall);
 		}
 	}
 
@@ -55,17 +55,17 @@ public class EstimateWaitTime extends ExtSequelActivity{
 	 * Parameter: Customer Type
 	 * Return: the wait time
 	 */
-	public double CalculateWaitTime(int uCuType) {
+	public double CalculateWaitTime(int uType) {
 		
 		icCall.waitTime = -1; //// not sure about this, we don't have wait time anywhere
-		if(uCuType == Constants.REGULAR) {
-			icCall.waitTime = Constants.EWTDURATION * model.qCallLine[Constants.GOLD].n + model.qCallLine[Constants.SILVER].n + model.qCallLine[Constants.REGULAR].n;
+		if(uType == Constants.REGULAR) {
+			icCall.waitTime = Constants.EWTDURATION * model.qCallLine.get(Constants.GOLD).size() + model.qCallLine.get(Constants.SILVER).size() + model.qCallLine.get(Constants.REGULAR).size();
 		}
-		if(uCuType == Constants.SILVER) {
-			icCall.waitTime = Constants.EWTDURATION * model.qCallLine[Constants.GOLD].n + model.qCallLine[Constants.SILVER].n;
+		if(uType == Constants.SILVER) {
+			icCall.waitTime = Constants.EWTDURATION * model.qCallLine.get(Constants.GOLD).size() + model.qCallLine.get(Constants.SILVER).size();
 		}
-		if(uCuType == Constants.GOLD) {
-			icCall.waitTime = Constants.EWTDURATION * model.qCallLine[Constants.GOLD].n;
+		if(uType == Constants.GOLD) {
+			icCall.waitTime = Constants.EWTDURATION * model.qCallLine.get(Constants.GOLD).size();
 		}
 		
 		return icCall.waitTime;
@@ -76,12 +76,13 @@ public class EstimateWaitTime extends ExtSequelActivity{
 	 * Parameter: Customer Type
 	 * Return: true if there is empty spot, false otherwise
 	 */
-	public boolean CheckEmptyQueue(int uCuType){
-		if(model.qCallLine[uCuType] == null)
+	public boolean CheckEmptyQueue(Call icCall){
+		if(model.qCallLine.get(icCall.uType).isEmpty())
 			return true;
 		else
 			return false;
 		
 	}
-}
 
+
+}
